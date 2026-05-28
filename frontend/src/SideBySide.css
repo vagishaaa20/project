@@ -1,0 +1,65 @@
+/* Side by Side Layout */
+
+.sidebyside-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  padding: 10px;
+}
+
+.sidebyside-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.panel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+.left-panel {
+  border-right: 1px solid #333;
+}
+
+/* Scrollbar styling */
+.panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.panel::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.panel::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Mobile responsive - stack vertically */
+@media (max-width: 1200px) {
+  .sidebyside-wrapper {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .left-panel {
+    border-right: none;
+    border-bottom: 1px solid #333;
+    max-height: none;
+  }
+
+  .panel {
+    max-height: none;
+  }
+}

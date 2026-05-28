@@ -1,0 +1,150 @@
+/* Approach Page - Vertical Timeline */
+
+.approach-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  padding: 40px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.approach-header {
+  max-width: 900px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+
+.approach-header h1 {
+  font-size: 40px;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+  font-weight: 700;
+}
+
+.approach-header .subtitle {
+  font-size: 16px;
+  color: #b0b0b0;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Override vertical timeline styles */
+.vertical-timeline-element-title {
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.vertical-timeline-element-subtitle {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  opacity: 0.9 !important;
+  margin-bottom: 12px !important;
+}
+
+.vertical-timeline-element--work .vertical-timeline-element-content {
+  box-shadow: 0 3px 13px rgba(0, 0, 0, 0.1) !important;
+  padding: 20px !important;
+  border-radius: 6px !important;
+}
+
+.vertical-timeline-element--work .vertical-timeline-element-content p {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.vertical-timeline-element--education .vertical-timeline-element-content {
+  box-shadow: 0 3px 13px rgba(0, 0, 0, 0.1) !important;
+  padding: 20px !important;
+  border-radius: 6px !important;
+}
+
+.vertical-timeline-element--education .vertical-timeline-element-content p {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+/* Timeline Icon */
+.vertical-timeline-element-icon {
+  font-size: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Features List */
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0 0;
+}
+
+.features-list li {
+  padding: 6px 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+}
+
+.features-list li:before {
+  content: '';
+  margin-right: 8px;
+}
+
+/* Timeline container adjustments */
+.vertical-timeline::before {
+  background: linear-gradient(to bottom, #444, #222);
+}
+
+.vertical-timeline-element {
+  margin-bottom: 30px !important;
+}
+
+.vertical-timeline-element:last-child .vertical-timeline-element-content {
+  box-shadow: none !important;
+}
+
+/* Responsive */
+@media (max-width: 1170px) {
+  .approach-header h1 {
+    font-size: 32px;
+  }
+
+  .vertical-timeline-element-title {
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .approach-container {
+    padding: 20px 10px;
+  }
+
+  .approach-header {
+    margin-bottom: 40px;
+  }
+
+  .approach-header h1 {
+    font-size: 24px;
+  }
+
+  .approach-header .subtitle {
+    font-size: 14px;
+  }
+
+  .vertical-timeline-element--work .vertical-timeline-element-content,
+  .vertical-timeline-element--education .vertical-timeline-element-content {
+    padding: 15px !important;
+  }
+
+  .vertical-timeline-element-title {
+    font-size: 16px !important;
+  }
+
+  .features-list li {
+    font-size: 13px;
+  }
+}

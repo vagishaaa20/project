@@ -1,0 +1,259 @@
+/* CheckEvidence - Minimalist Grey Design */
+
+.check-evidence-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.check-evidence-card {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  border: 1px solid #ffffff;
+}
+
+.check-evidence-card h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.check-evidence-card .subtitle {
+  margin: 0 0 24px 0;
+  color: #b0b0b0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #2a2a2a;
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  background: #2a2a2a;
+  border-color: #555;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+.btn-refresh {
+  padding: 10px 16px;
+  background: #ffffff;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-refresh:hover {
+  background: #b0b0b0;
+}
+
+/* Status Messages */
+.status-loading,
+.status-error,
+.status-empty {
+  padding: 12px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.status-loading {
+  background: #2a2a2a;
+  color: #b0b0b0;
+}
+
+.status-error {
+  background: #3a1a1a;
+  color: #ff6b6b;
+  border: 1px solid #663333;
+}
+
+.status-empty {
+  background: #2a2a2a;
+  color: #888;
+  border: 1px solid #333;
+}
+
+/* Records */
+.records-container {
+  margin-top: 20px;
+}
+
+.record-count {
+  font-size: 13px;
+  color: #b0b0b0;
+  margin: 0 0 15px 0;
+  font-weight: 500;
+}
+
+.evidence-record {
+  background: #2a2a2a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.evidence-record:hover {
+  background: #333;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.08);
+}
+
+/* Record Header */
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+}
+
+.record-number {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0a0a0a;
+  background: #888;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+
+.record-block {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Record Grid */
+.record-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.record-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.record-item .label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.record-item .value {
+  font-size: 13px;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.record-item .value.text-small {
+  font-size: 12px;
+  color: #b0b0b0;
+}
+
+.record-item .value.mono {
+  font-family: "Monaco", "Courier New", monospace;
+}
+
+/* Hash Display */
+.record-hash {
+  margin-bottom: 0;
+}
+
+.record-hash .label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.hash-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 3px;
+  padding: 8px 10px;
+}
+
+.hash-display code {
+  flex: 1;
+  font-family: "Monaco", "Courier New", monospace;
+  font-size: 11px;
+  color: #888;
+  word-break: break-all;
+  background: transparent;
+}
+
+.btn-copy-small {
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.btn-copy-small:hover {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .check-evidence-card {
+    padding: 20px;
+  }
+
+  .record-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
