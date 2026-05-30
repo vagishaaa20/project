@@ -10,6 +10,11 @@ import VerifyEvidence from "../VerifyEvidence";
 import ViewEvidence from "../ViewEvidence";
 import SideBySide from "../SideBySide";
 import DeepfakeDetection from "../DeepfakeDetection";
+import Cases from "../cases";
+import CaseDetail from "../CaseDetail";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
+import UserManagement from '../pages/UserManagement';
 
 const AppRoutes = () => {
   return (
@@ -33,7 +38,13 @@ const AppRoutes = () => {
         
         {/* Side by Side - Add & Check Evidence */}
         <Route path="/dashboard" element={<SideBySide />} />
-        
+
+        <Route path="/cases"     element={<Cases />} />
+        <Route path="/cases/:id" element={<CaseDetail />} />
+        <Route path="/users"    element={<UserManagement />} />
+
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password"  element={<ResetPassword />} />
       </Routes>
   )
 }

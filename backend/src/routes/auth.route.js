@@ -8,7 +8,9 @@ const {
   listUsers,
   updateUserRole,
   deleteUser,
-  getLogs
+  getLogs,
+  forgotPassword,
+  resetPassword
 } = require("../controllers/auth.controller");
 
 const router = express.Router();
@@ -34,5 +36,9 @@ router.post(  "/register",         verifyToken, requireRole("admin"), register);
 router.get(   "/users",            verifyToken, requireRole("admin"), listUsers);
 router.patch( "/users/:id/role",   verifyToken, requireRole("admin"), updateUserRole);
 router.delete("/users/:id",        verifyToken, requireRole("admin"), deleteUser);
+
+// Public routes — no auth needed
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password",  resetPassword);
 
 module.exports = router;

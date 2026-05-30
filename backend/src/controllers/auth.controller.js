@@ -1,6 +1,9 @@
 const bcrypt  = require("bcryptjs");
 const jwt     = require("jsonwebtoken");
 const pool    = require("../db/db");
+const crypto   = require("crypto");
+const { sendPasswordResetEmail } = require("../utils/mailer");
+
 
 /* ─────────────────────────────────────────
    Helper — sign a JWT and set httpOnly cookie
@@ -256,4 +259,86 @@ const getLogs = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout, me, listUsers, updateUserRole, deleteUser, getLogs };
+/* ── POST /auth/forgot-password ── */
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ success: false, error: "Email required" });
+
+  try {
+    const result = await pool.query(
+      "SELECT id, name, email FROM users WHERE email = $1",
+      [email.toLowerCase().trim()]
+    );
+
+    // Always return success to prevent user enumeration
+    if (result.rows.length === 0) {
+      return res.json({ success: true, message: "If that email exists, a reset link was sent." });
+    }
+
+    const user  = result.rows[0];
+    const token = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 min
+
+    // Invalidate old tokens
+    await pool.query(
+      "UPDATE password_reset_tokens SET used = TRUE WHERE user_id = $1 AND used = FALSE",
+      [user.id]
+    );
+
+    await pool.query(
+      `INSERT INTO password_reset_tokens (user_id, token, expires_at)
+       VALUES ($1, $2, $3)`,
+      [user.id, token, expires]
+    );
+
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${token}`;
+    await sendPasswordResetEmail(user.email, user.name, resetUrl);
+
+    return res.json({ success: true, message: "If that email exists, a reset link was sent." });
+  } catch (err) {
+    console.error("[forgotPassword]", err.message);
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+/* ── POST /auth/reset-password ── */
+const resetPassword = async (req, res) => {
+  const { token, password } = req.body;
+
+  if (!token || !password) {
+    return res.status(400).json({ success: false, error: "Token and password required" });
+  }
+  if (password.length < 8) {
+    return res.status(400).json({ success: false, error: "Password must be at least 8 characters" });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT prt.*, u.email FROM password_reset_tokens prt
+       JOIN users u ON u.id = prt.user_id
+       WHERE prt.token = $1 AND prt.used = FALSE AND prt.expires_at > NOW()`,
+      [token]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(400).json({ success: false, error: "Invalid or expired reset link" });
+    }
+
+    const { user_id, id: tokenId } = result.rows[0];
+    const hash = await bcrypt.hash(password, 12);
+
+    await pool.query("UPDATE users SET password = $1 WHERE id = $2", [hash, user_id]);
+    await pool.query("UPDATE password_reset_tokens SET used = TRUE WHERE id = $1", [tokenId]);
+
+    return res.json({ success: true, message: "Password reset successfully. You can now log in." });
+  } catch (err) {
+    console.error("[resetPassword]", err.message);
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+module.exports = {
+  register, login, logout, me,
+  listUsers, updateUserRole, deleteUser,
+  getLogs, forgotPassword, resetPassword
+};

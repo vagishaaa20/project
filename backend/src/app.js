@@ -30,6 +30,10 @@ app.use("/uploads", express.static("uploads"));
 /* ── Auth routes ───────────────────────── */
 app.use("/auth", authRoutes);
 
+/* ── Case routes ───────────────────────── */
+const caseRoutes = require("./routes/case.route");
+app.use("/cases", caseRoutes);
+
 /* ── File upload setup ─────────────────── */
 const upload = multer({ dest: "uploads/" });
 
