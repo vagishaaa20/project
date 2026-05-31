@@ -66,8 +66,6 @@ const ViewRecords = () => {
 
       <div className="records-grid">
         {records.map((record, index) => {
-          const videoUrl =
-            `http://localhost:5001/${record.file_path}`;
 
           const prediction =
             record.prediction || "PENDING";
@@ -143,17 +141,10 @@ const ViewRecords = () => {
               </div>
 
               <video
-                controls
-                className="record-video"
-              >
-                <source
-                  src={videoUrl}
-                  type="video/mp4"
-                />
-
-                Your browser does not support
-                the video tag.
-              </video>
+            controls
+            className="record-video"
+            src={record.cloud_url || `http://localhost:5001/${record.file_path}`}
+          />
             </div>
           );
         })}

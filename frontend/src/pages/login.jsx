@@ -1,76 +1,49 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [role, setRole] = useState("viewer"); // viewer | admin
-  const [email, setEmail] = useState("");
+  const [role,     setRole]     = useState("viewer");
+  const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState("");
 
-  // 🔧 DEV MODE FLAG
-  const DEV_MODE = false; // Set to true to bypass backend login (for faster testing)
+  const DEV_MODE = false;
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    // ===============================
-    // 🚧 DEV MODE (NO BACKEND)
-    // ===============================
     if (DEV_MODE) {
       setLoading(true);
-
       setTimeout(() => {
-        localStorage.setItem(
-          "auth",
-          JSON.stringify({
-            role,
-            email: email || "dev@trustvault.local",
-            token: "DEV_TOKEN",
-          })
-        );
-
+        localStorage.setItem("auth", JSON.stringify({
+          role,
+          email: email || "dev@trustvault.local",
+          token: "DEV_TOKEN",
+        }));
         navigate("/home");
         setLoading(false);
-
       }, 800);
-
       return;
     }
 
-    // ===============================
-    // 🔐 REAL BACKEND LOGIN
-    // ===============================
     try {
       setLoading(true);
-
       const res = await axios.post(
         "http://localhost:5001/auth/login",
-        {
-          email,
-          password,
-          role,
-          deviceId: navigator.userAgent,
-        },
-        {
-          withCredentials: true,
-        }
+        { email, password, role, deviceId: navigator.userAgent },
+        { withCredentials: true }
       );
 
-      console.log("Login response:", res.data);
-
-      // Save auth data locally
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          user: res.data.user,
-          token: res.data.token,
-        })
-      );
+      localStorage.setItem("auth", JSON.stringify({
+        user:  res.data.user,
+        token: res.data.token,
+      }));
 
       navigate("/home");
 
@@ -80,7 +53,29 @@ const Login = () => {
         err.response?.data?.message ||
         "Server unavailable. Please try again."
       );
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleGoogleLogin = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      setError("");
+      const res = await axios.post(
+        "http://localhost:5001/auth/google",
+        { credential: credentialResponse.credential },
+        { withCredentials: true }
+      );
+
+      localStorage.setItem("auth", JSON.stringify({
+        user:  res.data.user,
+        token: res.data.token,
+      }));
+
+      navigate("/home");
+    } catch (err) {
+      setError(err.response?.data?.error || "Google login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -91,12 +86,15 @@ const Login = () => {
       <div className="auth-card">
 
         <h2 className="auth-title">
-          {role === "admin" ? "ADMIN LOGIN" : "LOGIN"}
+          {role === "admin"   ? "ADMIN LOGIN"   :
+           role === "officer" ? "OFFICER LOGIN" : "LOGIN"}
         </h2>
 
         <p className="auth-subtitle">
           {role === "admin"
             ? "Restricted Administrative Access"
+            : role === "officer"
+            ? "Law Enforcement Evidence Access"
             : "Tamper-Proof Digital Evidence Access"}
         </p>
 
@@ -114,6 +112,14 @@ const Login = () => {
 
           <button
             type="button"
+            className={role === "officer" ? "active officer" : "officer"}
+            onClick={() => setRole("officer")}
+          >
+            Officer
+          </button>
+
+          <button
+            type="button"
             className={role === "admin" ? "active admin" : "admin"}
             onClick={() => setRole("admin")}
           >
@@ -123,10 +129,8 @@ const Login = () => {
 
         <form onSubmit={handleLogin}>
           <label>Email Address</label>
-
           <div className="input-group">
             <span className="input-icon">📧</span>
-
             <input
               type="email"
               placeholder="Enter your email"
@@ -137,10 +141,8 @@ const Login = () => {
           </div>
 
           <label>Password</label>
-
           <div className="input-group">
             <span className="input-icon">🔒</span>
-
             <input
               type="password"
               placeholder="Enter your password"
@@ -151,42 +153,38 @@ const Login = () => {
           </div>
 
           <div className="auth-links">
-            <span
-              className="forgot-link"
-              onClick={() => navigate("/forgot-password")}
-            >
+            <span className="forgot-link" onClick={() => navigate("/forgot-password")}>
               Forgot Password?
             </span>
           </div>
 
-          <button
-            className="btn-primary"
-            type="submit"
-            disabled={loading}
-          >
+          <button className="btn-primary" type="submit" disabled={loading}>
             {loading
               ? "Authenticating..."
-              : role === "admin"
-              ? "ADMIN LOGIN"
+              : role === "admin"   ? "ADMIN LOGIN"
+              : role === "officer" ? "OFFICER LOGIN"
               : "LOGIN"}
           </button>
         </form>
 
         <div className="auth-divider">OR</div>
 
-        <button className="google-btn" disabled>
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="Google"
+        {/* Google Sign In */}
+        <div className="google-signin-wrap">
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onError={() => setError("Google login failed.")}
+            theme="filled_black"
+            shape="rectangular"
+            width="350"
+            text="signin_with_google"
           />
-        </button>
+        </div>
 
         {role === "viewer" && (
           <p className="auth-footer">
-            Don’t have an account?{" "}
-            <span onClick={() => navigate("/register")}>
-              Register
-            </span>
+            Don't have an account?{" "}
+            <span onClick={() => navigate("/register")}>Register</span>
           </p>
         )}
 

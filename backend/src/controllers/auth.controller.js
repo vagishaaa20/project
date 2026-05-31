@@ -238,6 +238,7 @@ const getLogs = async (req, res) => {
         al.action,
         al.created_at AS timestamp,
         al.detail,
+        al.ip_address,
         u.name AS user_name
       FROM audit_log al
       LEFT JOIN users u ON u.id = al.user_id
@@ -249,7 +250,8 @@ const getLogs = async (req, res) => {
       action: row.detail ? `${row.action} - ${row.detail}` : row.action,
       status: 200,
       timestamp: row.timestamp,
-      user: row.user_name
+      user: row.user_name,
+      ip:row.ip_address || "127.0.0.1"
     }));
 
     res.json(logs);
@@ -337,8 +339,117 @@ const resetPassword = async (req, res) => {
   }
 };
 
+/* ── GET /auth/notifications ── */
+const getNotifications = async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM notifications
+       WHERE user_id = $1
+       ORDER BY created_at DESC
+       LIMIT 20`,
+      [req.user.id]
+    );
+    const unread = result.rows.filter(n => !n.read).length;
+    return res.json({ success: true, notifications: result.rows, unread });
+  } catch (err) {
+    console.error("[getNotifications]", err.message);
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+/* ── PATCH /auth/notifications/:id/read ── */
+const markNotificationRead = async (req, res) => {
+  try {
+    await pool.query(
+      "UPDATE notifications SET read = TRUE WHERE id = $1 AND user_id = $2",
+      [req.params.id, req.user.id]
+    );
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+/* ── PATCH /auth/notifications/read-all ── */
+const markAllRead = async (req, res) => {
+  try {
+    await pool.query(
+      "UPDATE notifications SET read = TRUE WHERE user_id = $1",
+      [req.user.id]
+    );
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+/* ── DELETE /auth/notifications/:id ── */
+const deleteNotification = async (req, res) => {
+  try {
+    await pool.query(
+      "DELETE FROM notifications WHERE id = $1 AND user_id = $2",
+      [req.params.id, req.user.id]
+    );
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+};
+
+const { OAuth2Client } = require("google-auth-library");
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const googleLogin = async (req, res) => {
+  const { credential } = req.body;
+  if (!credential) {
+    return res.status(400).json({ success: false, error: "No credential provided" });
+  }
+
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken:  credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, sub: googleId } = payload;
+
+    let result = await pool.query(
+      "SELECT id, name, email, role FROM users WHERE email = $1",
+      [email.toLowerCase()]
+    );
+
+    let user;
+    if (result.rows.length === 0) {
+      // Auto create as viewer
+      const insert = await pool.query(
+        `INSERT INTO users (name, email, password, role)
+         VALUES ($1, $2, $3, 'viewer')
+         RETURNING id, name, email, role`,
+        [name, email.toLowerCase(), `GOOGLE_${googleId}`]
+      );
+      user = insert.rows[0];
+    } else {
+      user = result.rows[0];
+    }
+
+    signAndSend(res, user);
+
+    return res.json({
+      success: true,
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+    });
+
+  } catch (err) {
+    console.error("[googleLogin]", err.message);
+    return res.status(401).json({ success: false, error: "Invalid Google token" });
+  }
+};
+
 module.exports = {
   register, login, logout, me,
   listUsers, updateUserRole, deleteUser,
-  getLogs, forgotPassword, resetPassword
+  getLogs, forgotPassword, resetPassword,
+  googleLogin,
+  getNotifications, markNotificationRead, markAllRead, deleteNotification,
 };

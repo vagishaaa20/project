@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Users, LogOut, FileText, ChevronDown, Home, Briefcase } from "lucide-react";
-
+import NotificationBell from "./NotificationBell";
 const AppNavbar = () => {
   const navigate        = useNavigate();
   const location        = useLocation();
@@ -50,75 +50,80 @@ const AppNavbar = () => {
 
   return (
     <nav className="navbar">
-<button className="navbar-logo" onClick={() => navigate("/home")}>
-  <div className="ashoka-seal" style={{ width: "36px", height: "36px" }}>
-    <div className="chakra" style={{ width: "20px", height: "20px" }}></div>
-  </div>
-  <div className="logo-text">
-    <div className="logo-main" style={{ fontSize: "16px", letterSpacing: "2px" }}>TRUSTVAULT</div>
-    <div className="logo-sub" style={{ fontSize: "8px", letterSpacing: "2px" }}>Blockchain Evidence Platform</div>
-  </div>
-</button>
+      <button className="navbar-logo" onClick={() => navigate("/home")}>
+        <div className="ashoka-seal" style={{ width: "36px", height: "36px" }}>
+          <div className="chakra" style={{ width: "20px", height: "20px" }}></div>
+        </div>
+        <div className="logo-text">
+          <div className="logo-main" style={{ fontSize: "16px", letterSpacing: "2px" }}>TRUSTVAULT</div>
+          <div className="logo-sub" style={{ fontSize: "8px", letterSpacing: "2px" }}>Blockchain Evidence Platform</div>
+        </div>
+      </button>
 
-      <div className="navbar-right" ref={menuRef}>
-        <motion.button
-          className="navbar-profile-btn"
-          onClick={() => setOpen(o => !o)}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <div className="navbar-avatar" style={{ background: `${roleColor}22`, border: `1.5px solid ${roleColor}`, color: roleColor }}>
-            {user?.name?.charAt(0).toUpperCase()}
-          </div>
-          <div className="navbar-user-info">
-            <span className="navbar-user-name">{user?.name}</span>
-            <span className="navbar-user-role" style={{ color: roleColor }}>{user?.role}</span>
-          </div>
-          <ChevronDown size={16} className={`navbar-chevron ${open ? "open" : ""}`} style={{ color: "#64748b" }} />
-        </motion.button>
+      {/* Right side — bell + profile together */}
+      <div className="navbar-right-group">
+        <NotificationBell />
+        <div className="navbar-right" ref={menuRef}>
+          {/* profile button */}
+          <motion.button
+            className="navbar-profile-btn"
+            onClick={() => setOpen(o => !o)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="navbar-avatar" style={{ background: `${roleColor}22`, border: `1.5px solid ${roleColor}`, color: roleColor }}>
+              {user?.name?.charAt(0).toUpperCase()}
+            </div>
+            <div className="navbar-user-info">
+              <span className="navbar-user-name">{user?.name}</span>
+              <span className="navbar-user-role" style={{ color: roleColor }}>{user?.role}</span>
+            </div>
+            <ChevronDown size={16} className={`navbar-chevron ${open ? "open" : ""}`} style={{ color: "#64748b" }} />
+          </motion.button>
 
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              className="navbar-dropdown"
-              initial={{ opacity: 0, y: -8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.96 }}
-              transition={{ duration: 0.15 }}
-            >
-              <div className="navbar-dropdown-header">
-                <div className="navbar-dropdown-avatar" style={{ background: `${roleColor}22`, border: `2px solid ${roleColor}`, color: roleColor }}>
-                  {user?.name?.charAt(0).toUpperCase()}
+          {/* dropdown */}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                className="navbar-dropdown"
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                transition={{ duration: 0.15 }}
+              >
+                <div className="navbar-dropdown-header">
+                  <div className="navbar-dropdown-avatar" style={{ background: `${roleColor}22`, border: `2px solid ${roleColor}`, color: roleColor }}>
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="navbar-dropdown-name">{user?.name}</div>
+                    <div className="navbar-dropdown-email">{user?.email}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="navbar-dropdown-name">{user?.name}</div>
-                  <div className="navbar-dropdown-email">{user?.email}</div>
-                </div>
-              </div>
 
-              <div className="navbar-dropdown-divider" />
+                <div className="navbar-dropdown-divider" />
+                <button className="navbar-dropdown-item" onClick={() => { navigate("/home");     setOpen(false); }}><Home      size={15} /> Home</button>
+                <button className="navbar-dropdown-item" onClick={() => { navigate("/cases");    setOpen(false); }}><Briefcase size={15} /> Cases</button>
+                <button className="navbar-dropdown-item" onClick={() => { navigate("/log-file"); setOpen(false); }}><FileText  size={15} /> Audit Logs</button>
 
-              <button className="navbar-dropdown-item" onClick={() => { navigate("/home");     setOpen(false); }}><Home     size={15} /> Home</button>
-              <button className="navbar-dropdown-item" onClick={() => { navigate("/cases");    setOpen(false); }}><Briefcase size={15} /> Cases</button>
-              <button className="navbar-dropdown-item" onClick={() => { navigate("/log-file"); setOpen(false); }}><FileText  size={15} /> Audit Logs</button>
+                {isAdmin && (
+                  <>
+                    <div className="navbar-dropdown-divider" />
+                    <div className="navbar-dropdown-section">Admin</div>
+                    <button className="navbar-dropdown-item admin" onClick={() => { navigate("/users"); setOpen(false); }}>
+                      <Users size={15} /> User Management
+                    </button>
+                  </>
+                )}
 
-              {isAdmin && (
-                <>
-                  <div className="navbar-dropdown-divider" />
-                  <div className="navbar-dropdown-section">Admin</div>
-                  <button className="navbar-dropdown-item admin" onClick={() => { navigate("/users"); setOpen(false); }}>
-                    <Users size={15} /> User Management
-                  </button>
-                </>
-              )}
-
-              <div className="navbar-dropdown-divider" />
-              <button className="navbar-dropdown-item logout" onClick={handleLogout}>
-                <LogOut size={15} /> Logout
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <div className="navbar-dropdown-divider" />
+                <button className="navbar-dropdown-item logout" onClick={handleLogout}>
+                  <LogOut size={15} /> Logout
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </nav>
   );

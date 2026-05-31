@@ -21,7 +21,7 @@ const LogFile = () => {
           withCredentials: true,
         }
       );
-
+      console.log("Logs data:", res.data[0]); 
       setLogs(res.data);
 
     } catch (error) {
@@ -126,7 +126,7 @@ const LogFile = () => {
         log.action,
         log.status,
         log.user || "N/A",
-        log.ip_address || "N/A"
+        log.ip || "N/A"
       ])
     ]
       .map(row => row.join(","))
@@ -306,7 +306,7 @@ const LogFile = () => {
                   </td>
 
                   <td className="log-ip">
-                    {log.ip_address || "N/A"}
+                    {log.ip || "N/A"}
                   </td>
                 </tr>
               ))}

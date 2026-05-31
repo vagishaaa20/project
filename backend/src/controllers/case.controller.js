@@ -1,5 +1,14 @@
 const pool = require("../db/db");
 
+
+const getCleanIp = (req) => {
+  const raw =
+    req.headers["x-forwarded-for"]?.split(",")[0].trim() ||
+    req.socket?.remoteAddress ||
+    getCleanIp(req) ||
+    "UNKNOWN";
+  return raw.replace("::ffff:", "").replace("::1", "127.0.0.1");
+};
 /* ── POST /cases ───────────────────────────────────────────
    Create a new case                                         */
 const createCase = async (req, res) => {
@@ -21,7 +30,7 @@ const createCase = async (req, res) => {
       `INSERT INTO audit_log (user_id, action, entity, entity_id, detail, ip_address)
        VALUES ($1, $2, $3, $4, $5, $6)`,
       [req.user.id, "CREATE_CASE", "case", result.rows[0].id,
-       `Case ${case_number}: ${title}`, req.ip]
+       `Case ${case_number}: ${title}`, getCleanIp(req)]
     );
 
     return res.status(201).json({ success: true, case: result.rows[0] });
@@ -131,7 +140,7 @@ const updateCase = async (req, res) => {
       `INSERT INTO audit_log (user_id, action, entity, entity_id, detail, ip_address)
        VALUES ($1, $2, $3, $4, $5, $6)`,
       [req.user.id, "UPDATE_CASE", "case", id,
-       `Updated: ${JSON.stringify(req.body)}`, req.ip]
+       `Updated: ${JSON.stringify(req.body)}`, getCleanIp(req)]
     );
 
     return res.json({ success: true, case: result.rows[0] });
@@ -158,7 +167,7 @@ const deleteCase = async (req, res) => {
       `INSERT INTO audit_log (user_id, action, entity, entity_id, detail, ip_address)
        VALUES ($1, $2, $3, $4, $5, $6)`,
       [req.user.id, "DELETE_CASE", "case", id,
-       `Deleted case ${result.rows[0].case_number}`, req.ip]
+       `Deleted case ${result.rows[0].case_number}`, getCleanIp(req)]
     );
 
     return res.json({ success: true, message: "Case deleted" });

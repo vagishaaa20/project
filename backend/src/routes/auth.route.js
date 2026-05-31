@@ -9,6 +9,11 @@ const {
   updateUserRole,
   deleteUser,
   getLogs,
+  getNotifications,
+  markNotificationRead,
+  markAllRead,
+  deleteNotification,
+  googleLogin,
   forgotPassword,
   resetPassword
 } = require("../controllers/auth.controller");
@@ -37,6 +42,13 @@ router.get(   "/users",            verifyToken, requireRole("admin"), listUsers)
 router.patch( "/users/:id/role",   verifyToken, requireRole("admin"), updateUserRole);
 router.delete("/users/:id",        verifyToken, requireRole("admin"), deleteUser);
 
+
+router.get(   "/notifications",           verifyToken, getNotifications);
+router.patch( "/notifications/:id/read",  verifyToken, markNotificationRead);
+router.patch( "/notifications/read-all",  verifyToken, markAllRead);
+router.delete("/notifications/:id",       verifyToken, deleteNotification);
+
+router.post("/google", googleLogin); 
 // Public routes — no auth needed
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password",  resetPassword);

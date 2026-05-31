@@ -33,7 +33,7 @@ const CaseDetail = () => {
   const [activeTab,  setActiveTab]  = useState("evidence");
   const [updating,   setUpdating]   = useState(false);
 
-  useEffect(() => { fetchCase(); fetchTimeline(); }, [id]);
+  useEffect(() => { fetchCase(); fetchTimeline(); }, [id]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchCase = async () => {
     try {
