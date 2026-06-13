@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Users, LogOut, FileText, ChevronDown, Home, Briefcase } from "lucide-react";
 import NotificationBell from "./NotificationBell";
-import API_URL from "./config";
+import API_URL from "../config";
 
 const AppNavbar = () => {
   const navigate        = useNavigate();

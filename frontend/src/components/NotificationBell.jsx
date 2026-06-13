@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Bell, Check, Trash2, CheckCheck } from "lucide-react";
-import API_URL from "./config";
+import API_URL from "../config"
 
 const TYPE_COLORS = {
   success: "#10b981",
