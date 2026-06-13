@@ -124,6 +124,7 @@ app.post(
           [caseId, evidenceId, videoPath, videoHash, req.user.id, cloudUrl, cloudPublicId]
         );
       } catch (err) {
+        console.log("FULL ERROR:", err.response?.data || err.message)
         if (err.code === "23505") {
           await auditLog(req.user.id, "UPLOAD_DUPLICATE", "evidence", evidenceId,
             `Duplicate upload attempt for case ${caseId}`, ip);

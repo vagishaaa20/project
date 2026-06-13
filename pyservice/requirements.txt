@@ -2,7 +2,8 @@ fastapi
 uvicorn[standard]
 web3
 python-dotenv
-opencv-python
+opencv-python-headless
 numpy
-tensorflow
+tensorflow-cpu
 python-multipart
+requests
