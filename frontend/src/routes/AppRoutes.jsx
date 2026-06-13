@@ -2,7 +2,7 @@ import React from 'react'
 import {Route, Routes} from 'react-router-dom'
 import Landing from "../pages/Landing";
 import Home from "../Home";
-import Login from "../pages/login";
+import Login from "../pages/Login";
 import Register from "../pages/Register";
 import LogFile from "../LogFile";
 import AddEvidence from "../AddEvidence";
