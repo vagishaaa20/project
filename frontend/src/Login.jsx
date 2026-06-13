@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import API_URL from "./config";
 
 const Login = () => {
     const [name, setname] = useState('');
@@ -8,7 +9,7 @@ const Login = () => {
     const nav=useNavigate();
     const submitdata = () => {
      const value={id:name,password:password};
-    axios.post("http://localhost:5000/forenics/login", value).then(res=>{
+    axios.post(`${API_URL}/forenics/login`, value).then(res=>{
         console.log(res.data)
         if(res.data!==null)
         {
