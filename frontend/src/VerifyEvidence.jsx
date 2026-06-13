@@ -100,7 +100,7 @@ const VerifyEvidence = () => {
         error.message.includes("Network Error")
       ) {
         errorMessage =
-          "Failed to connect to backend server. Make sure http://${API_URL} is accessible";
+          `Failed to connect to backend server. Make sure http://${API_URL} is accessible`;
       }
 
       setMessage(errorMessage);
