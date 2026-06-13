@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./CheckEvidence.css";
+import API_URL from "./config";
 
 const CheckEvidence = () => {
   const [records, setRecords] = useState([]);

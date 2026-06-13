@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Mail, ArrowLeft } from "lucide-react";
-import API_URL from "./config";
+import API_URL from "../config";
 
 const ForgotPassword = () => {
   const navigate      = useNavigate();
