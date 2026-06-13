@@ -26,7 +26,7 @@ const Register = () => {
 
     try {
       const res = await axios.post(
-        `http://${API_URL}/auth/register`,
+        `${API_URL}/auth/register`,
         {
           name,
           email,

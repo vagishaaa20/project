@@ -38,7 +38,7 @@ const NotificationBell = () => {
   const fetchNotifications = async () => {
     try {
       const res = await axios.get(
-        `http://${API_URL}/auth/notifications`,
+        `${API_URL}/auth/notifications`,
         { withCredentials: true }
       );
       setNotifications(res.data.notifications);
@@ -49,7 +49,7 @@ const NotificationBell = () => {
   const markRead = async (id) => {
     try {
       await axios.patch(
-        `http://${API_URL}/auth/notifications/${id}/read`,
+        `${API_URL}/auth/notifications/${id}/read`,
         {},
         { withCredentials: true }
       );
@@ -63,7 +63,7 @@ const NotificationBell = () => {
   const markAllRead = async () => {
     try {
       await axios.patch(
-        `http://${API_URL}/auth/notifications/read-all`,
+        `${API_URL}/auth/notifications/read-all`,
         {},
         { withCredentials: true }
       );
@@ -75,7 +75,7 @@ const NotificationBell = () => {
   const deleteNotif = async (id) => {
     try {
       await axios.delete(
-        `http://${API_URL}/auth/notifications/${id}`,
+        `${API_URL}/auth/notifications/${id}`,
         { withCredentials: true }
       );
       const notif = notifications.find(n => n.id === id);

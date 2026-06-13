@@ -36,7 +36,7 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://${API_URL}/auth/login`,
+        `${API_URL}/auth/login`,
         { email, password, role, deviceId: navigator.userAgent },
         { withCredentials: true }
       );
@@ -64,7 +64,7 @@ const Login = () => {
       setLoading(true);
       setError("");
       const res = await axios.post(
-        `http://${API_URL}/auth/google`,
+        `${API_URL}/auth/google`,
         { credential: credentialResponse.credential },
         { withCredentials: true }
       );

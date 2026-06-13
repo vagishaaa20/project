@@ -22,7 +22,7 @@ const Overview = () => {
     try {
       // Check backend
       const backendRes = await axios.get(
-        `http://${API_URL}/health`,
+        `${API_URL}/health`,
         {
           timeout: 5000,
           withCredentials: true,

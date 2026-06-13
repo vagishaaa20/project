@@ -28,7 +28,7 @@ const VerifyEvidence = () => {
 
     try {
       const res = await axios.post(
-        `http://${API_URL}/verify`,
+        `${API_URL}/verify`,
         formData,
         {
           headers: {
@@ -100,7 +100,7 @@ const VerifyEvidence = () => {
         error.message.includes("Network Error")
       ) {
         errorMessage =
-          `Failed to connect to backend server. Make sure http://${API_URL} is accessible`;
+          `Failed to connect to backend server. Make sure ${API_URL} is accessible`;
       }
 
       setMessage(errorMessage);

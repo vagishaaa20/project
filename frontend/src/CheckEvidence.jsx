@@ -19,7 +19,7 @@ const CheckEvidence = () => {
 
     try {
       const res = await axios.get(
-        `http://${API_URL}/records`,
+        `${API_URL}/records`,
         {
           withCredentials: true,
         }

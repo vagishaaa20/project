@@ -11,7 +11,7 @@ const ViewRecords = () => {
     const fetchRecords = async () => {
       try {
         const res = await axios.get(
-          `http://${API_URL}/records`,
+          `${API_URL}/records`,
           {
             withCredentials: true,
           }
@@ -144,7 +144,7 @@ const ViewRecords = () => {
               <video
             controls
             className="record-video"
-            src={record.cloud_url || `http://${API_URL}/${record.file_path}`}
+            src={record.cloud_url || `${API_URL}/${record.file_path}`}
           />
             </div>
           );

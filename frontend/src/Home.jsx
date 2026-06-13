@@ -58,7 +58,7 @@ const Home = () => {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get(`http://${API_URL}/auth/logs`, { withCredentials: true });
+      const res = await axios.get(`${API_URL}/auth/logs`, { withCredentials: true });
       setLogs(res.data);
     } catch {
       setLogs([
@@ -74,7 +74,7 @@ const Home = () => {
 
   const fetchCaseStats = async () => {
     try {
-      const res = await axios.get(`http://${API_URL}/cases`, { withCredentials: true });
+      const res = await axios.get(`${API_URL}/cases`, { withCredentials: true });
       const cases = res.data.cases || [];
       setCaseCount({
         total:   cases.length,

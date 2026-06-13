@@ -36,7 +36,7 @@ const AppNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`http://${API_URL}/auth/logout`, {}, { withCredentials: true });
+      await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
     } catch {}
     localStorage.removeItem("auth");
     localStorage.removeItem("user");

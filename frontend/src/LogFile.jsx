@@ -17,7 +17,7 @@ const LogFile = () => {
 
     try {
       const res = await axios.get(
-        `http://${API_URL}/auth/logs`,
+        `${API_URL}/auth/logs`,
         {
           withCredentials: true,
         }

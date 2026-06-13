@@ -41,7 +41,7 @@ useEffect(() => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://${API_URL}/auth/users`, { withCredentials: true });
+      const res = await axios.get(`${API_URL}/auth/users`, { withCredentials: true });
       setUsers(res.data.users);
     } catch (err) {
       setError("Failed to fetch users.");
@@ -62,7 +62,7 @@ useEffect(() => {
     setSubmitting(true);
     setError("");
     try {
-      await axios.post(`http://${API_URL}/auth/register`, form, { withCredentials: true });
+      await axios.post(`${API_URL}/auth/register`, form, { withCredentials: true });
       setSuccess(`User ${form.name} created successfully.`);
       setShowForm(false);
       setForm({ name: "", email: "", password: "", role: "viewer" });
@@ -78,7 +78,7 @@ useEffect(() => {
   const handleRoleChange = async (userId, newRole) => {
     try {
       await axios.patch(
-        `http://${API_URL}/auth/users/${userId}/role`,
+        `${API_URL}/auth/users/${userId}/role`,
         { role: newRole },
         { withCredentials: true }
       );
@@ -93,7 +93,7 @@ useEffect(() => {
   const handleDelete = async (userId) => {
     setDeleting(userId);
     try {
-      await axios.delete(`http://${API_URL}/auth/users/${userId}`, { withCredentials: true });
+      await axios.delete(`${API_URL}/auth/users/${userId}`, { withCredentials: true });
       setUsers(prev => prev.filter(u => u.id !== userId));
       setSuccess("User deleted.");
       setTimeout(() => setSuccess(""), 2000);

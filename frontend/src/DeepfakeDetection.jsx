@@ -40,7 +40,7 @@ const DeepfakeDetection = () => {
 
     try {
       const res = await axios.post(
-        `http://${API_URL}/analyze`,
+        `${API_URL}/analyze`,
         formData,
         { withCredentials: true, timeout: 300000 }
       );
