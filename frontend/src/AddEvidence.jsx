@@ -29,7 +29,7 @@ const AddEvidence = () => {
 
     try {
       const res = await axios.post(
-        `http://${API_URL}/upload`,
+        `${API_URL}/upload`,
         formData,
         {
           headers:         { Authorization: `Bearer ${localStorage.getItem("token")}` },

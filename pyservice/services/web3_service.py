@@ -3,6 +3,7 @@ import json
 import hashlib
 from datetime import datetime, timezone
 from web3 import Web3
+from web3.middleware import ExtraDataToPOAMiddleware
 
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR          = os.path.join(BASE_DIR, "..", "..")
@@ -12,11 +13,14 @@ POLYGON_RPC_URL   = os.getenv("POLYGON_RPC_URL",  "https://rpc-amoy.polygon.tech
 CONTRACT_ADDRESS  = os.getenv("CONTRACT_ADDRESS",  "0x28F1BE9bCDeDE58513471FfB187ae535FAd0D782")
 PRIVATE_KEY       = os.getenv("PRIVATE_KEY")
 
+print(f"[DEBUG] PRIVATE_KEY loaded: {bool(PRIVATE_KEY)}")
 print(f"[DEBUG] CONTRACT_ADDRESS = {CONTRACT_ADDRESS}")
 print(f"[DEBUG] POLYGON_RPC_URL  = {POLYGON_RPC_URL}")
 
 def _get_contract():
     web3 = Web3(Web3.HTTPProvider(POLYGON_RPC_URL))
+    web3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
+
     if not web3.is_connected():
         raise Exception("Blockchain not connected")
 

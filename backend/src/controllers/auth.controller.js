@@ -17,8 +17,8 @@ const signAndSend = (res, user) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure:   process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: true,
+    sameSite: "none", // allows cross-site cookies for frontend-backend in different domains
     maxAge:   8 * 60 * 60 * 1000,   // 8 h in ms
   });
 
@@ -125,7 +125,7 @@ const login = async (req, res) => {
    POST /auth/logout
 ───────────────────────────────────────── */
 const logout = (req, res) => {
-  res.clearCookie("token", { httpOnly: true, sameSite: "strict" });
+  res.clearCookie("token", { httpOnly: true, sameSite: "none", secure: true });
   return res.json({ success: true, message: "Logged out" });
 };
 
