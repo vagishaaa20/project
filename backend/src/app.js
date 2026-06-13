@@ -24,7 +24,19 @@ const { uploadFileToCloudinary, deleteFromCloudinary } = require("./utils/cloudi
 app.set("trust proxy", true);
 
 app.use(cors({
-  origin:      process.env.CLIENT_URL || "http://localhost:3000",
+  origin: function(origin, callback) {
+    const allowed = [
+      "http://localhost:3000",
+      "https://trustvault-pi.vercel.app",
+      "https://trustvault-f4wqx731n-vagishaaa20-3082s-projects.vercel.app",
+      process.env.CLIENT_URL
+    ];
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());
