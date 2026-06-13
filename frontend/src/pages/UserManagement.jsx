@@ -3,7 +3,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Plus, X, Trash2, Shield, Eye, UserCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import API_URL from "../config";
+import API_URL from "./config";
 
 const ROLE_COLORS = {
   admin:   { bg: "rgba(239,68,68,0.15)",   text: "#f87171", border: "rgba(239,68,68,0.3)"   },

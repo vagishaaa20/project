@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
-import API_URL from "../config";
+import API_URL from "./config";
 
 const ResetPassword = () => {
   const navigate          = useNavigate();
