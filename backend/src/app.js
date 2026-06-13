@@ -28,7 +28,8 @@ app.use(cors({
     const allowed = [
       "http://localhost:3000",
       "https://trustvault-pi.vercel.app",
-      "https://trustvault-f4wqx731n-vagishaaa20-3082s-projects.vercel.app",
+      "https://trustvault-f4wqx731n-vagishaa20-3082s-projects.vercel.app",
+      "https://trustvault-git-main-vagishaa20-3082s-projects.vercel.app",
       process.env.CLIENT_URL
     ];
     if (!origin || allowed.includes(origin)) {
