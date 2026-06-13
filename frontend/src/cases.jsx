@@ -4,6 +4,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, Plus, X, ChevronRight, Search } from "lucide-react";
 import "./cases.css";
+import API_URL from "./config";
 
 const STATUS_COLORS = {
   open:    { bg: "rgba(99,102,241,0.15)",  text: "#818cf8", border: "rgba(99,102,241,0.3)"  },
