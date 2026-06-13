@@ -4,6 +4,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { ArrowLeft, Briefcase, Clock, Shield, Upload, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import "./CaseDetail.css";
+import API_URL from "./config";
 
 const ACTION_ICONS = {
   UPLOAD_EVIDENCE:  <Upload size={14} />,
@@ -37,7 +38,7 @@ const CaseDetail = () => {
 
   const fetchCase = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/cases/${id}`, { withCredentials: true });
+      const res = await axios.get(`http://${API_URL}/cases/${id}`, { withCredentials: true });
       setCaseData(res.data.case);
       setEvidence(res.data.evidence);
     } catch (err) {
@@ -49,7 +50,7 @@ const CaseDetail = () => {
 
   const fetchTimeline = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/cases/${id}/timeline`, { withCredentials: true });
+      const res = await axios.get(`http://${API_URL}/cases/${id}/timeline`, { withCredentials: true });
       setTimeline(res.data.timeline);
     } catch (err) {
       console.error("Failed to fetch timeline:", err);
@@ -59,7 +60,7 @@ const CaseDetail = () => {
   const updateStatus = async (status) => {
     setUpdating(true);
     try {
-      await axios.patch(`http://localhost:5001/cases/${id}`, { status }, { withCredentials: true });
+      await axios.patch(`http://${API_URL}/cases/${id}`, { status }, { withCredentials: true });
       setCaseData(prev => ({ ...prev, status }));
     } catch (err) {
       console.error("Failed to update status:", err);

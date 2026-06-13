@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Users, LogOut, FileText, ChevronDown, Home, Briefcase } from "lucide-react";
 import NotificationBell from "./NotificationBell";
+import API_URL from "./config";
+
 const AppNavbar = () => {
   const navigate        = useNavigate();
   const location        = useLocation();
@@ -34,7 +36,7 @@ const AppNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5001/auth/logout", {}, { withCredentials: true });
+      await axios.post(`http://${API_URL}/auth/logout`, {}, { withCredentials: true });
     } catch {}
     localStorage.removeItem("auth");
     localStorage.removeItem("user");

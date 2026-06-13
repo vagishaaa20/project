@@ -29,7 +29,7 @@ const Cases = () => {
   const fetchCases = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5001/cases", { withCredentials: true });
+      const res = await axios.get(`http://${API_URL}/cases`, { withCredentials: true });
       setCases(res.data.cases);
     } catch (err) {
       console.error("Failed to fetch cases:", err);
@@ -46,7 +46,7 @@ const Cases = () => {
     setSubmitting(true);
     setError("");
     try {
-      await axios.post("http://localhost:5001/cases", form, { withCredentials: true });
+      await axios.post(`http://${API_URL}/cases`, form, { withCredentials: true });
       setShowForm(false);
       setForm({ case_number: "", title: "", description: "", assigned_to: "" });
       fetchCases();

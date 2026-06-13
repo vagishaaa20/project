@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScanFace, Upload, ShieldCheck, ShieldX, Loader2, Film } from "lucide-react";
 import "./DeepfakeDetection.css";
+import API_URL from "./config";
 
 const DeepfakeDetection = () => {
   const [caseId,     setCaseId]     = useState("");
@@ -39,7 +40,7 @@ const DeepfakeDetection = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/analyze",
+        `http://${API_URL}/analyze`,
         formData,
         { withCredentials: true, timeout: 300000 }
       );

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { Bell, Check, Trash2, CheckCheck } from "lucide-react";
+import API_URL from "./config";
 
 const TYPE_COLORS = {
   success: "#10b981",
@@ -37,7 +38,7 @@ const NotificationBell = () => {
   const fetchNotifications = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5001/auth/notifications",
+        `http://${API_URL}/auth/notifications`,
         { withCredentials: true }
       );
       setNotifications(res.data.notifications);
@@ -48,7 +49,7 @@ const NotificationBell = () => {
   const markRead = async (id) => {
     try {
       await axios.patch(
-        `http://localhost:5001/auth/notifications/${id}/read`,
+        `http://${API_URL}/auth/notifications/${id}/read`,
         {},
         { withCredentials: true }
       );
@@ -62,7 +63,7 @@ const NotificationBell = () => {
   const markAllRead = async () => {
     try {
       await axios.patch(
-        "http://localhost:5001/auth/notifications/read-all",
+        `http://${API_URL}/auth/notifications/read-all`,
         {},
         { withCredentials: true }
       );
@@ -74,7 +75,7 @@ const NotificationBell = () => {
   const deleteNotif = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5001/auth/notifications/${id}`,
+        `http://${API_URL}/auth/notifications/${id}`,
         { withCredentials: true }
       );
       const notif = notifications.find(n => n.id === id);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import API_URL from "./config";
 
 const VerifyEvidence = () => {
   const [evidenceId, setEvidenceId] = useState("");
@@ -27,7 +28,7 @@ const VerifyEvidence = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/verify",
+        `http://${API_URL}/verify`,
         formData,
         {
           headers: {
@@ -99,7 +100,7 @@ const VerifyEvidence = () => {
         error.message.includes("Network Error")
       ) {
         errorMessage =
-          "Failed to connect to backend server. Make sure http://localhost:5001 is accessible";
+          "Failed to connect to backend server. Make sure http://${API_URL} is accessible";
       }
 
       setMessage(errorMessage);

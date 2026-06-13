@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
+import API_URL from "../config";
 
 const ResetPassword = () => {
   const navigate          = useNavigate();
@@ -22,7 +23,7 @@ const ResetPassword = () => {
     setLoading(true);
     setError("");
     try {
-      await axios.post("http://localhost:5001/auth/reset-password", { token, password });
+      await axios.post(`http://${API_URL}/auth/reset-password`, { token, password });
       setSuccess(true);
       setTimeout(() => navigate("/login"), 3000);
     } catch (err) {

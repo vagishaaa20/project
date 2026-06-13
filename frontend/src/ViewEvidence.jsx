@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "./config";
 
 const ViewRecords = () => {
   const [records, setRecords] = useState([]);
@@ -10,7 +11,7 @@ const ViewRecords = () => {
     const fetchRecords = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5001/records",
+          `http://${API_URL}/records`,
           {
             withCredentials: true,
           }
@@ -143,7 +144,7 @@ const ViewRecords = () => {
               <video
             controls
             className="record-video"
-            src={record.cloud_url || `http://localhost:5001/${record.file_path}`}
+            src={record.cloud_url || `http://${API_URL}/${record.file_path}`}
           />
             </div>
           );

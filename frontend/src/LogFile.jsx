@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Activity, Filter, Download, RefreshCw } from "lucide-react";
+import API_URL from "./config";
 
 const LogFile = () => {
   const [logs, setLogs] = useState([]);
@@ -16,7 +17,7 @@ const LogFile = () => {
 
     try {
       const res = await axios.get(
-        "http://localhost:5001/auth/logs",
+        `http://${API_URL}/auth/logs`,
         {
           withCredentials: true,
         }

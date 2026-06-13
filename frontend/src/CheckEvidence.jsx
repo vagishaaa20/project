@@ -18,7 +18,7 @@ const CheckEvidence = () => {
 
     try {
       const res = await axios.get(
-        "http://localhost:5001/records",
+        `http://${API_URL}/records`,
         {
           withCredentials: true,
         }

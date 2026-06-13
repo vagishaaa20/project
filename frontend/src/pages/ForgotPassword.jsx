@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Mail, ArrowLeft } from "lucide-react";
+import API_URL from "./config";
 
 const ForgotPassword = () => {
   const navigate      = useNavigate();
@@ -16,7 +17,7 @@ const ForgotPassword = () => {
     setLoading(true);
     setError("");
     try {
-      await axios.post("http://localhost:5001/auth/forgot-password", { email });
+      await axios.post(`http://${API_URL}/auth/forgot-password`, { email });
       setSent(true);
     } catch {
       setError("Something went wrong. Please try again.");

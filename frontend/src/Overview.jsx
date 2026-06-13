@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Overview.css";
+import API_URL from "./config";
 
 const Overview = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Overview = () => {
     try {
       // Check backend
       const backendRes = await axios.get(
-        "http://localhost:5001/health",
+        `http://${API_URL}/health`,
         {
           timeout: 5000,
           withCredentials: true,
@@ -180,7 +181,7 @@ const Overview = () => {
               </p>
 
               <p className="status-detail">
-                Port: 5001
+                Port: ${API_URL.split(":")[1]}
               </p>
 
               <p className="status-detail">

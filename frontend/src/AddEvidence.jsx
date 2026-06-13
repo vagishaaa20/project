@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import API_URL from "./config";
 
 const AddEvidence = () => {
   const [caseId,         setCaseId]         = useState("");
@@ -28,7 +29,7 @@ const AddEvidence = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/upload",
+        `http://${API_URL}/upload`,
         formData,
         {
           headers:         { Authorization: `Bearer ${localStorage.getItem("token")}` },
